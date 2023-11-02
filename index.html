@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>どんなiRoがすき？</title>
+</head>
+<body>
+    <div class="splash">
+        <div class="splash_title">
+            <h2>
+                <span class="en">
+                    What<br>
+                    <span class="green">c</span>o<span class="blue">l</span>o<span class="red">r</span><br>
+                    do you like?
+                </span>
+            </h2>
+            <h2>
+                <span class="ja">
+                    どんな<br>
+                    <span class="blue">い</span><span class="red">ろ</span><span class="green">が</span><br>
+                    すき？<br><span class="rgb">click</span>
+                </span>
+            </h2>
+            <span class="square"></span>
+        </div>
+    </div>
+    <div class="content">
+        <div class="main">
+            <div id="RGB">
+                <div class="RGB_r">
+                    <div class="circle">
+                        <span class="cr1"></span>
+                        <span class="cr2"></span>
+                        <span class="cr3 re"></span>
+                    </div>
+                    <h2><span class="red">R</span>ed : <span class="re_val">0</span></h2>
+                    <input type="range" name="" class="input red" value="0" max="255">
+                </div>
+                <div class="RGB_g">
+                    <div class="circle">
+                        <span class="cr1"></span>
+                        <span class="cr2"></span>
+                        <span class="cr3 gr"></span>    
+                    </div>
+                    <h2><span class="green">G</span>reen : <span class="gr_val">0</span></h2>
+                    <input type="range" name="" class="input green" value="0" max="255">
+                </div>
+                <div class="RGB_b">
+                    <div class="circle">
+                        <span class="cr1"></span>
+                        <span class="cr2"></span>
+                        <span class="cr3 bl"></span>
+                    </div>
+                    <h2><span class="blue">B</span>lue : <span class="bl_val">0</span></h2>
+                    <input type="range" name="" class="input blue" value="0" max="255">
+                </div>
+            </div>
+            <a href="" class="btn btn-svg">
+                <svg>
+                    <rect x="2" y="2" rx="0" fill="none" width=200 height="50"></rect>
+                    
+                </svg>
+                Shuffle
+            </a>
+        </div>
+        <div class="menu">
+            <div class="result"></div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script>
+
+        let hov_time = 300; //変化時間
+        let rgb = ""; //rgbのoffset座標
+        let RGB_red = 0;
+        let RGB_green = 0;
+        let RGB_blue = 0;
+        let RGB_rgb = ""
+
+
+        $(function(){
+            $('.splash_title').hover(function(){
+                $('.en').stop().animate({opacity: 0}, hov_time,function(){
+                    $('.en').css('display','none');
+                    $('.ja').css('display','block');
+                    $('.ja').animate({opacity: 1}, hov_time);
+                });
+            $('.splash_title').mousemove(function(e){
+                rgb = 'rgb(' + e.offsetX + ',' + e.offsetY + ','+ Math.ceil((e.offsetX+e.offsetY)/2) +')';
+                $('.rgb').css('color',rgb);
+            })
+            },
+
+            function(){
+                $('.ja').stop().animate({opacity: 0}, hov_time,function(){
+                    $('.ja').css('display','none');
+                    $('.en').css('display','block');
+                    $('.en').animate({opacity: 1}, hov_time);
+                });
+            });
+
+            $('.splash_title').on('click',function(){
+                $('.splash').animate({opacity: 0}, hov_time,function(){
+                    $('.splash').css('display','none');
+                    $('.content').css('display','block');
+                    $('.content').animate({opacity: 1}, hov_time);
+                })
+            });
+
+
+            $('input').on('input',function(){
+                RGB_red = $('.input' + '.red').val();
+                RGB_green = $('.input' + '.green').val();
+                RGB_blue = $('.input' + '.blue').val();
+                RGB_rgb = 'rgb(' + RGB_red + ',' + RGB_green + ',' + RGB_blue + ')';
+
+                $('.re_val').text(RGB_red);
+                $('.gr_val').text(RGB_green);
+                $('.bl_val').text(RGB_blue);
+                $('.result').css('background-color',RGB_rgb);
+
+                $('.cr3'+'.re').css({ //input着火を即反映のためcss
+                    width: RGB_red,
+                    height: RGB_red,
+                    margin: -RGB_red/2,
+                });
+                $('.cr3'+'.gr').css({
+                    width: RGB_green,
+                    height: RGB_green,
+                    margin: -RGB_green/2,
+                });
+                $('.cr3'+'.bl').css({
+                    width: RGB_blue,
+                    height: RGB_blue,
+                    margin: -RGB_blue/2,
+                });
+
+            })
+
+            $('.btn').on('click',function(){
+                $('.btn').attr('href', 'javascript: void(0)');
+                RGB_red = Math.ceil(Math.random()*255);
+                RGB_green = Math.ceil(Math.random()*255);
+                RGB_blue = Math.ceil(Math.random()*255);
+                RGB_rgb = 'rgb(' + RGB_red + ',' + RGB_green + ',' + RGB_blue + ')';
+
+                $('.re_val').text(RGB_red);
+                $('.gr_val').text(RGB_green);
+                $('.bl_val').text(RGB_blue);
+                $('.result').css('background-color',RGB_rgb);
+
+                $('.input'+'.red').val(RGB_red);
+                $('.input'+'.green').val(RGB_green);
+                $('.input'+'.blue').val(RGB_blue);
+
+                $('.cr3'+'.re').animate({ //こっちはcssじゃなくanimate
+                    width: RGB_red,
+                    height: RGB_red,
+                    margin: -RGB_red/2,
+                });
+                $('.cr3'+'.gr').animate({
+                    width: RGB_green,
+                    height: RGB_green,
+                    margin: -RGB_green/2,
+                });
+                $('.cr3'+'.bl').animate({
+                    width: RGB_blue,
+                    height: RGB_blue,
+                    margin: -RGB_blue/2,
+                });
+            })
+        });
+    </script>
+</body>
+</html>
