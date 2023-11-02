@@ -16,7 +16,7 @@ body {
 
 .splash {
     /* display: none; */
-    /* 作業用後で消す！消した後flexのコメントアウト戻す */
+    /* メンテ用 diplay:flexも触る */
     height: 100vh;
     width: 100%;
     position: relative;
@@ -76,7 +76,6 @@ body {
 }
 
 .content {
-    /* 後でdisplayのコメントアウトを戻す */
     display: none;
     height: 100vh;
     width: 100%;
