@@ -3,6 +3,7 @@
 ## DEMO
 
   - デプロイしている場合はURLを記入（任意）
+  - https://ksk-461.github.io/kadai02_janken_rich/
 
 ## 紹介と使い方
 
