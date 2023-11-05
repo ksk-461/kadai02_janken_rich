@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:,">
     <title>どんなiRoがすき？</title>
 </head>
 <body>
@@ -57,31 +58,63 @@
                     <input type="range" name="" class="input blue" value="0" max="255">
                 </div>
             </div>
-            <a href="" class="btn btn-svg">
+            <div class="switch">
+            <a href="" class="btn btn-svg btn-shu">
                 <svg>
                     <rect x="2" y="2" rx="0" fill="none" width=200 height="50"></rect>
                     
                 </svg>
                 Shuffle
             </a>
+            <a href="" class="btn btn-svg btn-qz">
+                <svg>
+                    <rect x="2" y="2" rx="0" fill="none" width=200 height="50"></rect>
+                    
+                </svg>
+                Quiz
+            </a>
+            </div>
         </div>
         <div class="menu">
-            <div class="result"></div>
+            <div class="result ans"><p class="color_name">#000000</p></div>
+            <div class="result qz">
+                <p>
+                <span class="red_qz">R</span><br>
+                <span class="green_qz">G</span><br>
+                <span class="blue_qz">B</span><br>
+                </p>
+            </div>
         </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <script>
-
         let hov_time = 300; //変化時間
         let rgb = ""; //rgbのoffset座標
         let RGB_red = 0;
         let RGB_green = 0;
         let RGB_blue = 0;
+        let RGB_red_qz = 0;
+        let RGB_green_qz = 0;
+        let RGB_blue_qz = 0;
         let RGB_rgb = ""
-
+        let RGB_rgb_qz = ""
+        let bgColor = "" //16進数変換用
 
         $(function(){
+            
+            /*$.getJSON("./color.json") // json読み込み開始
+                .done(function(json){ // jsonの読み込みに成功した時
+                    console.log('成功');
+                })
+                .fail(function(){ // jsonの読み込みに失敗した時
+                    console.log('失敗');
+                })
+                .always(function(){ // 成功/失敗に関わらず実行
+                    console.log('必ず実行される');
+            });*/
+
+
             $('.splash_title').hover(function(){
                 $('.en').stop().animate({opacity: 0}, hov_time,function(){
                     $('.en').css('display','none');
@@ -94,6 +127,7 @@
             })
             },
 
+            //ホバー外れた時
             function(){
                 $('.ja').stop().animate({opacity: 0}, hov_time,function(){
                     $('.ja').css('display','none');
@@ -110,6 +144,15 @@
                 })
             });
 
+            $('.btn'+'.btn-svg'+'.btn-qz').on('click',function(){
+                $('.btn'+'').attr('href', 'javascript: void(0)');
+                RGB_red_qz = Math.ceil(Math.random()*255);
+                RGB_green_qz = Math.ceil(Math.random()*255);
+                RGB_blue_qz = Math.ceil(Math.random()*255);
+                RGB_rgb_qz = 'rgb(' + RGB_red_qz + ',' + RGB_green_qz + ',' + RGB_blue_qz + ')';
+                console.log(RGB_rgb_qz)
+                $('.result'+'.qz').css('background-color',RGB_rgb_qz);
+            })
 
             $('input').on('input',function(){
                 RGB_red = $('.input' + '.red').val();
@@ -117,10 +160,28 @@
                 RGB_blue = $('.input' + '.blue').val();
                 RGB_rgb = 'rgb(' + RGB_red + ',' + RGB_green + ',' + RGB_blue + ')';
 
+                // if(Math.abs(RGB_red - RGB_red_qz) < 10){
+                //     $('.red_qz').html('Re');
+                //     console.log(RGB_red,RGB_red_qz);
+                // }else if(RGB_red == RGB_red_qz){
+                //     $('.red_qz').html('Red');
+                // }
+
+                bgColor = RGB_rgb; 
+                bgColor = bgColor.replace("rgb(","").replace(")","").split(","); //rgb(0,0,0)のrgb(を取る
+                    //0〜255の3つの数字をそれぞれ変換し、繋げる
+                    //3つの配列となった1つ目をparseintで数値に変換した後、
+                    //tostring(16)で16進数 に変換
+                    //桁数を保菅すべく、0を冒頭に足してsliceで末尾2桁に削る
+                bgColor = "#" + ("0" + parseInt(bgColor[0]).toString(16)).slice(-2)
+                            + ("0" + parseInt(bgColor[1]).toString(16)).slice(-2)
+                            + ("0" + parseInt(bgColor[2]).toString(16)).slice(-2);
+                $('.color_name').html(bgColor);
+                
                 $('.re_val').text(RGB_red);
                 $('.gr_val').text(RGB_green);
                 $('.bl_val').text(RGB_blue);
-                $('.result').css('background-color',RGB_rgb);
+                $('.result'+'.ans').css('background-color',RGB_rgb);
 
                 $('.cr3'+'.re').css({ //input着火を即反映のためcss
                     width: RGB_red,
@@ -138,19 +199,60 @@
                     margin: -RGB_blue/2,
                 });
 
+                if(RGB_red_qz == 0){
+                    $('.red_qz').html('R');
+                }else if(RGB_red != RGB_red_qz && Math.abs(RGB_red - RGB_red_qz) > 10){
+                    $('.red_qz').html('R');
+                }else if(RGB_red == RGB_red_qz){
+                    $('.red_qz').html('Red');
+                }else if(Math.abs(RGB_red - RGB_red_qz) < 10){
+                    $('.red_qz').html('Re')
+                }
+                
+                if(RGB_green_qz == 0){
+                    $('.green_qz').html('G');
+                }else if(RGB_green != RGB_green_qz && Math.abs(RGB_green - RGB_green_qz) > 10){
+                    $('.green_qz').html('G');
+                }else if(RGB_green == RGB_green_qz){
+                    $('.green_qz').html('GReeeeN');
+                }else if(Math.abs(RGB_green - RGB_green_qz) < 10){
+                    $('.green_qz').html('Gre')
+                }
+
+                if(RGB_blue_qz == 0){
+                    $('.blue_qz').html('B');
+                }else if(RGB_blue != RGB_blue_qz && Math.abs(RGB_blue - RGB_blue_qz) > 10){
+                    $('.blue_qz').html('B');
+                }else if(RGB_blue == RGB_blue_qz){
+                    $('.blue_qz').html('Blue');
+                }else if(Math.abs(RGB_blue - RGB_blue_qz) < 10){
+                    $('.blue_qz').html('Bl')
+                }
+
             })
 
-            $('.btn').on('click',function(){
-                $('.btn').attr('href', 'javascript: void(0)');
+            $('.btn'+'.btn-svg'+'.btn-shu').on('click',function(){
+                $('.btn'+'').attr('href', 'javascript: void(0)');
                 RGB_red = Math.ceil(Math.random()*255);
                 RGB_green = Math.ceil(Math.random()*255);
                 RGB_blue = Math.ceil(Math.random()*255);
                 RGB_rgb = 'rgb(' + RGB_red + ',' + RGB_green + ',' + RGB_blue + ')';
 
+                bgColor = RGB_rgb; 
+                bgColor = bgColor.replace("rgb(","").replace(")","").split(","); //rgb(0,0,0)のrgb(を取る
+                    //0〜255の3つの数字をそれぞれ変換し、繋げる
+                    //3つの配列となった1つ目をparseintで数値に変換した後、
+                    //tostring(16)で16進数 に変換
+                    //桁数を保菅すべく、0を冒頭に足してsliceで末尾2桁に削る
+                bgColor = "#" + ("0" + parseInt(bgColor[0]).toString(16)).slice(-2)
+                            + ("0" + parseInt(bgColor[1]).toString(16)).slice(-2)
+                            + ("0" + parseInt(bgColor[2]).toString(16)).slice(-2);
+                $('.color_name').html(bgColor);
+
                 $('.re_val').text(RGB_red);
                 $('.gr_val').text(RGB_green);
                 $('.bl_val').text(RGB_blue);
-                $('.result').css('background-color',RGB_rgb);
+                $('.result'+'.ans').css('background-color',RGB_rgb);
 
                 $('.input'+'.red').val(RGB_red);
                 $('.input'+'.green').val(RGB_green);
@@ -172,6 +274,7 @@
                     margin: -RGB_blue/2,
                 });
             })
+
         });
     </script>
 </body>
