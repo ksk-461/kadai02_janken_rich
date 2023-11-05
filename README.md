@@ -26,9 +26,9 @@
 
 ## 参考にした web サイトなど
 
-  https://1-notes.com/
-  - 本当にいろんなページを参考に自分でも噛み砕いてみたけど、何かと助けられたページを1つ
-  https://qiita.com/tao_s/items/ddde3a4a1a725106da2c
-  - RGBをHEX（16進数に変換）
-  - toString(16)で文字列に変換なんて目から鱗
-  - コメントにある通り桁数が揃わないため補完が必要
+  - https://1-notes.com/
+    本当にいろんなページを参考に自分でも噛み砕いてみたけど、何かと助けられたページを1つ
+  - https://qiita.com/tao_s/items/ddde3a4a1a725106da2c
+    RGBをHEX（16進数に変換）
+    toString(16)で文字列に変換なんて目から鱗
+    コメントにある通り桁数が揃わないため補完が必要
